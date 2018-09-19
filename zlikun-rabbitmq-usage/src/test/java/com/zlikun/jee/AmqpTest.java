@@ -58,18 +58,37 @@ public class AmqpTest extends TestBase {
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+
+                log.info("exchange = {}, routingKey = {}, deliveryTag = {}", envelope.getExchange(), envelope.getRoutingKey(), envelope.getDeliveryTag());
+
                 log.info("[{}] receive message: {}", consumerTag, new String(body));
                 try {
                     TimeUnit.SECONDS.sleep(1L);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                // 显示进行Ack（应答）操作
                 channel.basicAck(envelope.getDeliveryTag(), false);
+
+                // 显示拒绝消息：requeue=true，则消息重新入队，等待下一次消费，requeue=false，则直接删除消息（会启用死信队列功能）
+                // basicReject() 一次只能拒绝一条消息，如果要批量拒绝，使用basicNack() 来实现
+                // channel.basicReject(envelope.getDeliveryTag(), false);
+
+                // multiple=false，表示拒绝当前消息(deliveryTag)，multiple=true，表示拒绝当前消息之前所有未确认的消息
+                // channel.basicNack(envelope.getDeliveryTag(), true, true);
+            }
+
+            @Override
+            public void handleShutdownSignal(String consumerTag, ShutdownSignalException sig) {
+                log.info("closed channel or connection, consumerTag = {}, reason = {}", consumerTag, sig.getReason());
             }
         };
 
-        channel.basicConsume(QUEUE_NAME, consumer);
+        // autoAck = false，关闭自动应答
+        channel.basicConsume(QUEUE_NAME, false, consumer);
         TimeUnit.SECONDS.sleep(5L);
+
+        // 建议显示关闭channel，但如果不关闭在connection关闭时，channel也会关闭
         channel.close();
         connection.close();
 
