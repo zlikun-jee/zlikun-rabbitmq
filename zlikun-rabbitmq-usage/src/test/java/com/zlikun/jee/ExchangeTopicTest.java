@@ -19,7 +19,7 @@ public class ExchangeTopicTest extends TestBase {
     final String QUEUE_NAME = "A.QUEUE";
     final String QUEUE_NAME_2 = "A.QUEUE.2";
 
-    final String EXCHANGE_TYPE = "topic";
+    final BuiltinExchangeType EXCHANGE_TYPE = BuiltinExchangeType.TOPIC;
 
     @Test
     public void producer() throws IOException, TimeoutException {

@@ -19,13 +19,14 @@ public class ExchangeDirectTest extends TestBase {
     final String QUEUE_NAME = "A.QUEUE";
     final String ROUTING_KEY = "A.ROUTING_KEY";
 
-    final String EXCHANGE_TYPE = "direct";
+    final BuiltinExchangeType EXCHANGE_TYPE = BuiltinExchangeType.DIRECT;
 
     @Test
     public void producer() throws IOException, TimeoutException {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
+
 
         channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE, true, false, null);
         channel.queueDeclare(QUEUE_NAME, true, false, false, null);

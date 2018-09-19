@@ -20,7 +20,7 @@ public class ExchangeFanoutTest extends TestBase {
     final String QUEUE_NAME_2 = "A.QUEUE.2";
     final String ROUTING_KEY = "A.ROUTING_KEY";
 
-    final String EXCHANGE_TYPE = "fanout";
+    final BuiltinExchangeType EXCHANGE_TYPE = BuiltinExchangeType.FANOUT;
 
     @Test
     public void producer() throws IOException, TimeoutException {
