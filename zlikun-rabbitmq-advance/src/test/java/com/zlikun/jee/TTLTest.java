@@ -31,7 +31,7 @@ public class TTLTest extends TestBase {
         // 声明队列时，通过参数指定消息默认过期时间，默认不过期，这里指定为60,000毫秒
         Map<String, Object> args = new HashMap<>(4);
         // 如果TTL设置为0，表示除非此时可以将消息投递给消费者，否则立即丢弃该消息
-        args.put("x-message-ttl", 6000);
+        args.put("x-message-ttl", 60000);
         // 该设置是针对队列本身的设置，表示指定时间（单位：毫秒）内不使用队列（没有消费者，也没有GET主动获取消息）或不重新声明队列，队列会被删除
         // 值规则与上面相同，但不能设置为0，在本例中，如果队列30分钟内未被使用，队列会被删除，如果不设置则队列永远不会删除
         args.put("x-expires", 30 * 3600);
