@@ -12,6 +12,7 @@
     <modules>
         <module>zlikun-rabbitmq-usage</module>
         <module>zlikun-rabbitmq-advance</module>
+        <module>zlikun-rabbitmq-spring</module>
     </modules>
 
     <properties>
